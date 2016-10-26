@@ -1,0 +1,50 @@
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "base front-end boilerplate",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "front-end",
+    "html",
+    "css",
+    "scss",
+    "js"
+  ],
+  "author": "movasyl@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "bower-main": "^0.2.14",
+    "browser-sync": "^2.10.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean-css": "^2.0.13",
+    "gulp-concat": "^2.6.0",
+    "gulp-concat-vendor": "0.0.4",
+    "gulp-file-include": "^0.13.7",
+    "gulp-ftp": "^1.1.0",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-sass": "^2.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.5",
+    "imagemin-pngquant": "^4.2.0",
+    "rimraf": "^2.4.4",
+    "stream-series": "^0.1.1"
+  },
+  "dependencies": {
+    "wiredep": "^2.2.2"
+  }
+}
