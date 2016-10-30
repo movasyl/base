@@ -6,4 +6,4 @@ This is my base workflow for quickstart with gulp & bower.
 * Bower depending include normalize.css & jquery library.
 * This project using the [SASS-boilerplate](https://github.com/movasyl/sass-boilerplate) by Hugo Giraudel. [7-1 architecture pattern](https://sass-guidelin.es/#architecture) and BEM methodology.
 
-##### v1.0.1
+##### v1.0.2
