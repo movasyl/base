@@ -1,3 +1,112 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the button component.
 // -----------------------------------------------------------------------------
+
+/* 
+* 		Recommended use:
+*
+*	<a class="btn [btn--modifier]" role="button" href="[url]">Button text</a>
+*	<button class="btn [btn--modifier]" type="submit">Button text</button>
+*	<input class="btn [btn--modifier]" type="submit" value="Button text"> 
+
+*/
+
+
+$btn-colors:(
+  "red": (
+  	"background-color": #ff0000,
+  	"text-color": white,
+  	),
+  "blue": (
+  	"background-color": #0000ff,
+  	"text-color": white,
+  	),
+  "yellow": (
+  	"background-color": #ffff00,
+  	"text-color": white,
+  	),
+);
+
+$btn-text-color: #fff; //button text color
+$btn-text-color-hover: $btn-text-color; //button text hover&focus color 
+$btn-border-radius: 3px;
+$btn-font-family: "Arial", sans-serif;
+$btn-font-size: $base-font-size; // if button f-z != base_f-s
+$btn-padding-h: 2.5em; //-h horizontal padding
+$btn-padding-v: 1em; //-v vertical padding
+$btn-duration: 0.1s; //animation setting
+$btn-timing: linear; //animation setting
+
+.btn {
+ 	display: inline-block;
+ 	border: none;
+ 	margin: 0;
+ 	white-space: nowrap;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background-color $btn-duration $btn-timing;
+
+	    &:hover,
+	    &:active,
+	    &:focus {
+	    	text-decoration: none;
+	    	outline: none;
+	    }
+
+	    &:-moz-focus-inner {
+	    	border: 0;
+	    	padding: 0;
+	    }
+
+	    &:disabled,
+	    &.disabled {
+	    	cursor: not-allowed;
+    		opacity: 0.5;
+	    }
+///----------------------------------COLORS
+	    	@include m("red"){
+	      		background: map-get(map-get($btn-colors, "red"), "background-color");
+	      		color: map-get(map-get($btn-colors, "red"), "text-color");
+	      		@include on-event(){
+	      			background: lighten(map-get(map-get($btn-colors, "red"), "background-color"), 10%);
+	      			color: #000;
+	      		}
+	    	}
+
+	    	@include m("blue"){
+	      		background: map-get(map-get($btn-colors, "blue"), "background-color");
+	      		color: map-get(map-get($btn-colors, "blue"), "text-color");
+	      		@include on-event(){
+	      			background: lighten(map-get(map-get($btn-colors, "blue"), "background-color"), 10%);
+	      			color: #000;
+	      		}
+	    	}
+
+	    	@include m("yellow"){
+	      		background: map-get(map-get($btn-colors, "yellow"), "background-color");
+	      		color: map-get(map-get($btn-colors, "yellow"), "text-color");
+	      		@include on-event(){
+	      			background: lighten(map-get(map-get($btn-colors, "yellow"), "background-color"), 10%);
+	      			color: #000;
+	      		}
+	    	}
+///--------------------------------------SIZES
+    		@include m("small"){
+    	  		font-size: $btn-font-size;
+    	  		padding: $btn-padding-v $btn-padding-h;
+    		}    		
+    		@include m("normal"){
+    	  		font-size: 18px;
+    	  		padding: $btn-padding-v $btn-padding-h;
+    		}    		
+    		@include m("big"){
+    	  		font-size: 20px;
+    	  		padding: $btn-padding-v $btn-padding-h;
+    		}
+
+	    	
+	    
+}

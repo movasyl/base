@@ -4,7 +4,8 @@
 @import
   'abstracts/variables',
   'abstracts/functions',
-  'abstracts/mixins';
+  'abstracts/mixins',
+  'abstracts/gird-system__mixins';
 
 /* 2. Vendors */
 @import
@@ -33,3 +34,32 @@
  /* 7. Themes */
 @import
   'themes/default';
+  
+.dev{
+  padding: 20px;
+}
+
+/* .naut {
+  font-family: Nautilus;
+  font-weight: normal;
+}
+.proxl {
+  font-family: ProximaNova;
+  font-weight: 300;
+}
+.proxr {
+  font-family: ProximaNova;
+  font-weight: 400;
+}
+.proxb {
+  font-family: ProximaNova;
+  font-weight: bold;
+}
+.monsl {
+  font-family: Montserrat;
+  font-weight: 300;
+}
+.monsb {
+  font-family: Montserrat;
+  font-weight: bold;
+} */

@@ -11,13 +11,14 @@
   @return url($base + $type + $path);
 }
 
+
 /// Returns URL to an image based on its path
 /// @param {String} $path - image path
 /// @param {String} $base [$base-url] - base URL
 /// @return {Url}
 /// @require $base-url
 @function image($path, $base: $base-url) {
-  @return asset($base, 'images/', $path);
+  @return asset($base, 'img/', $path);
 }
 
 /// Returns URL to a font based on its path
@@ -27,4 +28,42 @@
 /// @require $base-url
 @function font($path, $base: $base-url) {
   @return asset($base, 'fonts/', $path);
+}
+
+/// Returns em of a $context
+/// @param {size} $pixels - px
+/// @param {size} $context - reletive font-size
+@function em($pixels, $context: $bace-font-size) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+/// Returns em of a margin or padding calculate with line-height
+/// @param {size} $pixels - size padding or margin in px
+/// @param {size} $context - reletive font-size & line-height
+@function line-mrgn($pixels, $block-font-size: $base-font-size, $context: $global-line-height){
+  $em-pixels: em($pixels, $block-font-size);
+  $leading: ($context/4);
+  @return (($em-pixels/1em)-$leading)*1em;
+}
+/// Return $string with another separator
+/// Need for @Font-Face mixin
+/// @param {string} $string - any words
+/// @param {strind} $search - separator
+/// @param {string $replace - new separator
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
 }

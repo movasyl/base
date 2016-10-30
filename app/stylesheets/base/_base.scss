@@ -20,6 +20,15 @@ html {
 } 
 
 /**
+* Make height 100%
+*/
+html,
+body {
+  height: 100%;
+}
+
+
+/**
  * Basic styles for links
  */
 a {

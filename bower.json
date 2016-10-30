@@ -9,8 +9,8 @@
   "moduleType": [],
   "license": "MIT",
   "dependencies": {
-    "normalize.css": "*",
-    "jquery": "^2"
+    "jquery": "^2",
+    "modernizer": "^2.8.2"
   },
   "main": "",
   "private": true,

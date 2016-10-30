@@ -2,6 +2,37 @@
 // This file contains all application-wide Sass mixins.
 // -----------------------------------------------------------------------------
 
+/// Clear inner floats
+@mixin clearfix(){
+  &::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+/// Make font-size with rem & old IE support.
+/// @param {size-px} $font-size [$base-font-size]
+@mixin font-size($font-size:$base-font-size, $line-height:false) {
+    font-size:$font-size;
+    font-size:($font-size / $font-size-base)*1rem;
+    @if $line-height == false {
+        line-height: 1em;
+    }
+}
+/// Reset ul styles.
+@mixin list-reset() {
+    list-style: none;
+    padding-left: 0;
+}
+
+///sets the placeholders color with browser support
+@mixin placeholder($color) {
+    &::-moz-placeholder           { color: $color; opacity: 1; }
+    &:-ms-input-placeholder       { color: $color; }
+    &::-webkit-input-placeholder  { color: $color; }
+}
+
 /// Event wrapper
 /// @author Harry Roberts
 /// @param {Bool} $self [false] - Whether or not to include current selector
@@ -42,6 +73,17 @@
     }
 }
 
+/// inline-block justify hack
+@mixin justify(){
+  text-align: justify;
+  &::after{
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 0;
+  }
+}
+
 /// Block Modifier
 /// @access public
 /// @param {String} $modifier - Modifier's name
@@ -62,4 +104,118 @@
     @include modifier($modifier) {
         @content;
     }
+}
+
+
+/// Generates a triangle pointing in a specified direction.
+/// @example scss
+///   .element {
+///     &::before {
+///       @include triangle(up, #b25c9c, 2rem);
+///       content: "";
+///     }
+///   }
+///
+///   // CSS Output
+///   .element::before {
+///     border-style: solid;
+///     height: 0;
+///     width: 0;
+///     border-color: transparent transparent #b25c9c transparent;
+///     border-width: 0 1rem 1rem;
+///     content: "";
+///   }
+
+@mixin triangle(
+    $direction: up,
+    $color: currentColor,
+    $width: 1rem,
+    $height: ($width / 2)
+  ) {
+  @if not index(
+      "up" "up-right" "right" "down-right" "down" "down-left" "left" "up-left",
+      $direction
+    ) {
+    @error "Direction must be `up`, `up-right`, `right`, `down-right`, " +
+           "`down`, `down-left`, `left` or `up-left`.";
+  } @else if not _is-color($color) {
+    @error "`#{$color}` is not a valid color for the `$color` argument in " +
+           "the `triangle` mixin.";
+  } @else {
+    border-style: solid;
+    height: 0;
+    width: 0;
+
+    @if $direction == "up" {
+      border-color: transparent transparent $color;
+      border-width: 0 ($width / 2) $height;
+    } @else if $direction == "up-right" {
+      border-color: transparent $color transparent transparent;
+      border-width: 0 $width $width 0;
+    } @else if $direction == "right" {
+      border-color: transparent transparent transparent $color;
+      border-width: ($height / 2) 0 ($height / 2) $width;
+    } @else if $direction == "down-right" {
+      border-color: transparent transparent $color;
+      border-width: 0 0 $width $width;
+    } @else if $direction == "down" {
+      border-color: $color transparent transparent;
+      border-width: $height ($width / 2) 0;
+    } @else if $direction == "down-left" {
+      border-color: transparent transparent transparent $color;
+      border-width: $width 0 0 $width;
+    } @else if $direction == "left" {
+      border-color: transparent $color transparent transparent;
+      border-width: ($height / 2) $width ($height / 2) 0;
+    } @else if $direction == "up-left" {
+      border-color: $color transparent transparent;
+      border-width: $width $width 0 0;
+    }
+  }
+}
+
+
+/**_____________________________________________________________________
+* FONT FAMILY GENERATOR
+* for uses need concatenation function (e.g. str-replace())
+*/
+// Use it like this:
+// $font-family being the name of the font e.g. Helvetica
+// $path being the folder inside the fonts folder where the font files are
+@mixin font-face($font-family, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+    eot: "?#iefix",
+    svg: "#" + str-replace($font-family, " ", "_")
+  );
+
+  $formats: (
+    eot: "embedded-opentype",
+    otf: "opentype",
+    ttf: "truetype"
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($font-family);
+    font-style: $style;
+    font-weight: $weight;
+    @if(map-has-key($extmods, eot)){ src: url("#{$path}.eot")}
+    src: $src;
+  }
+  
+    // Chrome for Windows rendering fix: http://www.adtrak.co.uk/blog/font-face-chrome-rendering//
+
+   @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @font-face {
+      font-family: $font-family;
+        src: url('#{$path}.svg##{$font-family}') format('svg');
+    }
+  }
 }

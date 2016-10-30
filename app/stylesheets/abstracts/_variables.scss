@@ -14,6 +14,10 @@ $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvet
 /// @type List
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
+/// Base font-size
+/// @unity px
+$base-font-size: 16px;
+$base-line-height: 1.15;
 
 
 
@@ -48,19 +52,44 @@ $max-width: 1180px !default;
 
 
 
-
+/// ----------------------------RESPONSIVE GIRD------------------------------------
 
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
 /// @prop {Map} values - Values are actual breakpoints expressed in pixels
 $breakpoints: (
-  'small': 320px,
-  'medium': 768px,
-  'large': 1024px,
+	"extra-smal": 320px,
+	"small": 480px,
+	"medium": 768px,
+	"large": 1024px,
 ) !default;
 
+$screen-xs-min: map-get($breakpoints, "extra-smal");
+$screen-sm-min: map-get($breakpoints, "small");
+$screen-md-min: map-get($breakpoints, "medium");
+$screen-lg-min: map-get($breakpoints, "large");
 
+/// Number of columns in the grid.
+$grid-columns:              12 !default;
+/// Padding between columns. Gets divided in half for the left and right.
+$grid-gutter-width:         30px !default;
 
+/// Small screen / tablet
+$container-tablet:             (720px + $grid-gutter-width) !default;
+//** For `$screen-sm-min` and up.
+$container-sm:                 $container-tablet !default;
+
+// Medium screen / desktop
+$container-desktop:            (940px + $grid-gutter-width) !default;
+//** For `$screen-md-min` and up.
+$container-md:                 $container-desktop !default;
+
+// Large screen / wide desktop
+$container-large-desktop:      (1140px + $grid-gutter-width) !default;
+//** For `$screen-lg-min` and up.
+$container-lg:                 $container-large-desktop !default;
+
+/// ----------------------------RESPONSIVE GIRD-----------------!-------------------
 
 
 
@@ -68,4 +97,4 @@ $breakpoints: (
 /// @type String
 /// @example scss - When using a CDN
 ///   $base-url: 'http://cdn.example.com/assets/';
-$base-url: '/assets/' !default;
+$base-url: '../asset/' !default;

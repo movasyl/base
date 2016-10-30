@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     fileinclude = require('gulp-file-include'),
     cleanCSS = require('gulp-clean-css'),
+    unCSS = require('gulp-uncss'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
@@ -22,27 +23,30 @@ var path = {
     build: {
         html: 'build/',
         js: 'build/js/',
+        jsLib: 'build/js/vendor/',
         style: 'build/css/',
-        img: 'build/images/',
-        fonts: 'build/fonts/'
+        img: 'build/asset/images/',
+        fonts: 'build/asset/fonts/'
     },
     src: {
         html: {
             file: 'app/*.html',
-            template: 'app/templates'
+            template: 'app/templates/'
         },
         js: 'app/js/**/*.js',
+        jsLib: 'app/lib/**/*.js',
         style: 'app/stylesheets/main.scss',
-        img: 'app/img/**/*.*',
-        fonts: 'app/fonts/**/*.*'
+        img: 'app/asset/img/**/*.*',
+        fonts: 'app/asset/fonts/**/*.*'
     },
     watch: {
         html: 'app/**/*.html',
         js: 'app/js/**/*.js',
+        jsLib: 'app/lib/**/*.js',
         style: 'app/stylesheets/**/*.scss',
-        img: 'app/img/**/*.*',
-        fonts: 'app/fonts/**/*.*',
-        bower: 'app/bower_components/**/*.*'
+        img: 'app/asset/img/**/*.*',
+        fonts: 'app/asset/fonts/**/*.*',
+        bower: 'app/lib/**/*.*'
     },
     clean: './build',
 };
@@ -88,12 +92,21 @@ gulp.task('html:build', function() {
             stream: true
         }));
 });
-
-gulp.task('js:build', function() {
+gulp.task('jsLib:build', function() {
+    gulp.src(['app/lib/modernizer/modernizr.js', 'app/lib/jquery/dist/jquery.js'])
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(path.build.jsLib))
+        .pipe(reload({
+            stream: true
+        }));
+});
+gulp.task('js:build', ['jsLib:build'], function() {
     gulp.src(path.src.js)
         .pipe(sourcemaps.init())
         .pipe(uglify())
-        .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(path.build.js))
         .pipe(reload({
             stream: true
@@ -102,19 +115,25 @@ gulp.task('js:build', function() {
 
 gulp.task('style:build', function() {
     gulp.src(path.src.style)
-        .pipe(sourcemaps.init())
+
+    .pipe(sourcemaps.init())
         .pipe(autoprefixer({
             browsers: ["last 9 versions", "not ie < 8", "> 1%"],
-            cascade: false
+            cascade: true
         }))
         .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({
-            keepBreaks: false,
+
+    .pipe(cleanCSS({
+            keepBreaks: true,
+            semanticMerging: false, // semantic bem styles (need test!!)
             debug: true
         }, function(details) {
             console.log(details.name + ': ' + details.stats.originalSize);
             console.log(details.name + ': ' + details.stats.minifiedSize);
         }))
+        // .pipe(unCSS({
+        //     html: [path.build.html + '*.html'] // видалить всі стилі які не використовуються в html
+        // }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(path.build.style))
         .pipe(reload({
@@ -154,6 +173,7 @@ gulp.task('build', [
 gulp.task('watch', function() {
     watch([path.watch.html], function(event, cb) {
         gulp.start('html:build');
+        // gulp.start('style:build');
     });
     watch([path.watch.style], function(event, cb) {
         gulp.start('style:build');
